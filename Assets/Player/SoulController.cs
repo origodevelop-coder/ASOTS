@@ -1,16 +1,33 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody))]
 public class SoulController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private Rigidbody rb;
+    private InputAction moveAction;
+
+    [SerializeField] private InputActionAsset asset;
+    [SerializeField] private GameObject cam;
+    [SerializeField] private float speed;
+
+    void Awake()
     {
-        
+        moveAction = asset.FindAction("WASD");
+        rb = GetComponent<Rigidbody>();
+
+        asset.Enable();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (transform.gameObject.activeSelf)
+        {
+
+                Vector2 input = moveAction.ReadValue<Vector2>();
+                Vector3 direction = (input.y * cam.transform.forward + input.x * cam.transform.right) * speed * Time.deltaTime;
+
+                rb.linearVelocity = direction;
+        }
     }
 }
