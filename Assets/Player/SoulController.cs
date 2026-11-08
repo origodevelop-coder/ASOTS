@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class SoulController : MonoBehaviour
 {
     private Rigidbody rb;
+    private InputAction shiftAction;
     private InputAction moveAction;
 
     [SerializeField] private InputActionAsset asset;
@@ -14,6 +15,7 @@ public class SoulController : MonoBehaviour
     void Awake()
     {
         moveAction = asset.FindAction("WASD");
+        shiftAction = asset.FindAction("Shift");
         rb = GetComponent<Rigidbody>();
 
         asset.Enable();

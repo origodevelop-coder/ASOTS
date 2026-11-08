@@ -20,19 +20,26 @@ public class HumanController : MonoBehaviour
         shiftAction = asset.FindAction("Shift");
         rb = GetComponent<CharacterController>();
 
-        shiftAction.performed += ctx =>
-        {
-            Instantiate(bodyEmpty, transform.position,transform.rotation);
-            Instantiate(soul, transform.position + new Vector3(0,1.2f,0), transform.rotation);
-            Destroy(transform);
-        };
+        shiftAction.performed += Shift;
 
         asset.Enable();
     }
 
+    private void OnDestroy()
+    {
+        shiftAction.performed -= Shift;
+    }
+
+    private void Shift(InputAction.CallbackContext context)
+    {
+        Instantiate(bodyEmpty, transform.position, transform.rotation);
+        Instantiate(soul, transform.position, transform.rotation);
+        Destroy(transform.gameObject);
+    }
+
     void Update()
     {
-        if (transform.gameObject.activeSelf)
+        if (transform.gameObject != null)
         {
 
             Vector2 input = moveAction.ReadValue<Vector2>();
